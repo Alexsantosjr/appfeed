@@ -14,7 +14,7 @@ const posts = [
       role: "Developer",
     },
     content: [
-      { type: "paragraph", content: "Fala galera 👋" },
+      { type: "paragraph", content: "Fala galera aoba 👋" },
       {
         type: "paragraph",
         content:
