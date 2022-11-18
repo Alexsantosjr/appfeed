@@ -11,6 +11,8 @@ export function Post({ author, content, publishedAt }) {
   const [comments, setComments] = useState(["Post irado!"]);
   const [newCommentText, setNewCommentText] = useState("");
 
+  console.log(newCommentText)
+
   const publishedDateFormatted = format(
     publishedAt,
     "d 'de' LLLL 'às' HH:mm'h'",
@@ -33,7 +35,24 @@ export function Post({ author, content, publishedAt }) {
 
   function handleNewComment() {
     setNewCommentText(event.target.value);
+    event.target.setCustomValidity("")
+
   }
+
+  function onDeleteComment(commentDeleted){
+    const newListWhitoutCommentDeleted = comments.filter(comment => {
+      return comment !== commentDeleted
+
+    })
+
+    setComments(newListWhitoutCommentDeleted)
+  }
+
+  function handleNewCommentInvalid(){
+    event.target.setCustomValidity("Campo Obrigatório!")
+  }
+
+  const isNewCommentEmpty = newCommentText.length === 0;
 
   return (
     <article className={styles.post}>
@@ -72,16 +91,23 @@ export function Post({ author, content, publishedAt }) {
           placeholder="Deixe seu comentário"
           value={newCommentText}
           onChange={handleNewComment}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
 
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isNewCommentEmpty}>Publicar</button>
         </footer>
       </form>
 
       <div className={styles.commentList}>
         {comments.map((comment) => {
-          return <Comment key={comment} content={comment} />;
+          return (
+            <Comment 
+              key={comment} 
+              content={comment}
+              onDeleteComment={onDeleteComment} 
+            />);
         })}
       </div>
     </article>
